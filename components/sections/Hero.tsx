@@ -10,7 +10,7 @@ export default function Hero() {
         loop
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: 0, opacity: 0.4 }}
+        style={{ zIndex: 0, opacity: 1 }}
       >
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
@@ -18,7 +18,7 @@ export default function Hero() {
       {/* Cream overlay */}
       <div
         className="absolute inset-0"
-        style={{ zIndex: 1, backgroundColor: 'rgba(253, 248, 243, 0.7)' }}
+        style={{ zIndex: 1, backgroundColor: 'rgba(253, 248, 243, 0.4)' }}
       />
 
       {/* Content */}
