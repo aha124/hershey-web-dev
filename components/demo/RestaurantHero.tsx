@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { RESTAURANT_DEMO } from '@/lib/constants';
 
@@ -13,13 +14,21 @@ export default function RestaurantHero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background image placeholder */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#3d2314]/90 via-[#3d2314]/70 to-[#3d2314]/90">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0iIzNkMjMxNCIvPgo8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxLjUiIGZpbGw9IiM1YTM1MjAiIG9wYWNpdHk9IjAuMyIvPgo8L3N2Zz4=')] opacity-50" />
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/demo-restaurant-hero.jpg"
+          alt="The Cocoa Table restaurant interior"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#3d2314]/80 via-[#3d2314]/60 to-[#3d2314]/80" />
       </div>
 
-      {/* Decorative food images would go here */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Decorative blurs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-32 h-32 rounded-full bg-[#b87333]/10 blur-3xl" />
         <div className="absolute bottom-20 right-10 w-40 h-40 rounded-full bg-[#722f37]/10 blur-3xl" />
       </div>

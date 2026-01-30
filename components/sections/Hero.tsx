@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -14,8 +15,22 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center warm-gradient geometric-pattern grain-texture overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/hero-bg.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover opacity-[0.07]"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 warm-gradient opacity-95" />
+        <div className="absolute inset-0 geometric-pattern" />
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

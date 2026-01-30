@@ -1,9 +1,14 @@
 'use client';
 
+import Image from 'next/image';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { User } from 'lucide-react';
 import { ABOUT_CONTENT } from '@/lib/constants';
 
 export default function About() {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <section id="about" className="py-20 sm:py-28 bg-[#fdf8f3] grain-texture">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,7 +25,7 @@ export default function About() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
-          {/* Photo placeholder */}
+          {/* Photo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -28,10 +33,21 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="lg:col-span-2 flex justify-center"
           >
-            <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-full bg-gradient-to-br from-[#4a3728]/10 to-[#d4a574]/30 border-4 border-[#4a3728]/20 flex items-center justify-center">
-              <span className="text-[#4a3728]/40 text-sm font-medium">
-                Photo
-              </span>
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-4 border-[#4a3728]/20">
+              {imageError ? (
+                <div className="w-full h-full bg-gradient-to-br from-[#4a3728]/10 to-[#d4a574]/30 flex items-center justify-center">
+                  <User className="w-20 h-20 text-[#4a3728]/30" />
+                </div>
+              ) : (
+                <Image
+                  src="/images/anthony-headshot.png"
+                  alt="Anthony Arbaiza"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 256px, 288px"
+                  onError={() => setImageError(true)}
+                />
+              )}
             </div>
           </motion.div>
 
