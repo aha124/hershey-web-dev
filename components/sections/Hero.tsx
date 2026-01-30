@@ -97,6 +97,24 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover -z-10"
+        style={{ filter: 'brightness(1.1) opacity(0.3)' }}
+      >
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
+      </video>
+
+      {/* Warm overlay to tint the video */}
+      <div
+        className="absolute inset-0 -z-5"
+        style={{ backgroundColor: 'rgba(253, 248, 243, 0.85)' }}
+      />
+
       {/* Layer 1: Base Gradient */}
       <div
         className="absolute inset-0"
