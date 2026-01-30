@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, MapPin, Clock, Send } from 'lucide-react';
 import { Input, Textarea } from '@/components/ui/Input';
@@ -53,28 +53,35 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
     setIsSubmitting(true);
 
-    // Simulate form submission (replace with Formspree or other service)
-    // For Formspree: POST to https://formspree.io/f/YOUR_FORM_ID
     try {
-      // For demo purposes, we'll use a mailto fallback
-      const mailtoLink = `mailto:${CONTACT.email}?subject=Website Inquiry from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(
-        `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone || 'Not provided'}\n\nMessage:\n${formData.message}`
-      )}`;
+      const response = await fetch('https://formspree.io/f/mlgnovjw', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || 'Not provided',
+          message: formData.message,
+        }),
+      });
 
-      // Open mailto link
-      window.location.href = mailtoLink;
-
-      setIsSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', message: '' });
-    } catch {
-      console.error('Form submission error');
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        alert('Something went wrong. Please try again or email directly.');
+      }
+    } catch (error) {
+      alert('Something went wrong. Please try again or email directly.');
     } finally {
       setIsSubmitting(false);
     }
@@ -123,17 +130,10 @@ export default function Contact() {
                   <Send className="w-8 h-8 text-[#4a3728]" />
                 </div>
                 <h3 className="text-xl font-semibold text-[#2d1f1a] mb-2">
-                  Message Ready!
+                  Message Sent!
                 </h3>
                 <p className="text-[#4a3728]">
-                  Your email client should open with your message. If it doesn&apos;t,
-                  feel free to email me directly at{' '}
-                  <a
-                    href={`mailto:${CONTACT.email}`}
-                    className="text-[#d4a574] hover:underline"
-                  >
-                    {CONTACT.email}
-                  </a>
+                  Thanks for reaching out! I&apos;ll get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
