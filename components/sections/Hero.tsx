@@ -1,19 +1,57 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+
 export default function Hero() {
+  const [displayedText, setDisplayedText] = useState('');
+  const [currentLine, setCurrentLine] = useState(0);
+  const [isTyping, setIsTyping] = useState(true);
+
+  const lines = [
+    'Websites for Local Businesses.',
+    'Built by Your Neighbor.'
+  ];
+
+  useEffect(() => {
+    if (currentLine >= lines.length) {
+      setIsTyping(false);
+      return;
+    }
+
+    const fullText = lines.slice(0, currentLine + 1).join('\n');
+    const targetLength = fullText.length;
+
+    if (displayedText.length < targetLength) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(fullText.slice(0, displayedText.length + 1));
+      }, 50); // typing speed
+      return () => clearTimeout(timeout);
+    } else if (currentLine < lines.length - 1) {
+      // Pause between lines
+      const timeout = setTimeout(() => {
+        setCurrentLine(currentLine + 1);
+      }, 500);
+      return () => clearTimeout(timeout);
+    } else {
+      setIsTyping(false);
+    }
+  }, [displayedText, currentLine, lines]);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#fdf8f3]">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background video */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: 0, opacity: 1 }}
-      >
-        <source src="/videos/hero-bg.mp4" type="video/mp4" />
-      </video>
+      <div className="absolute inset-0">
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: 0, opacity: 1 }}
+        >
+          <source src="/videos/hero-bg.mp4" type="video/mp4" />
+        </video>
+      </div>
 
       {/* Cream overlay */}
       <div
@@ -22,11 +60,17 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative px-4 text-center" style={{ zIndex: 2 }}>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#4a3728] mb-6">
-          Websites for Local Businesses.
-          <br />
-          Built by Your Neighbor.
+      <div className="relative z-10 px-4 text-center max-w-4xl mx-auto">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#4a3728] mb-6 min-h-[1.2em] md:min-h-[2.4em]">
+          {displayedText.split('\n').map((line, i) => (
+            <span key={i}>
+              {line}
+              {i < displayedText.split('\n').length - 1 && <br />}
+            </span>
+          ))}
+          <span
+            className={`inline-block w-[3px] h-[1em] bg-[#d4a574] ml-1 align-middle ${isTyping ? 'animate-pulse' : 'animate-blink'}`}
+          />
         </h1>
 
         <p className="text-lg md:text-xl text-[#5c4a3d] max-w-2xl mx-auto mb-8">
