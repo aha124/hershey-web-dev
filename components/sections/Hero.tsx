@@ -1,92 +1,35 @@
 'use client';
 
-import { useMemo, useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import { FloatingParticles } from '@/components/ui/FloatingParticles';
 import { HERO_CONTENT } from '@/lib/constants';
 
-// Generate particle configurations
-function generateParticles(count: number) {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100, // percentage position
-    y: Math.random() * 100,
-    size: 4 + Math.random() * 8, // 4-12px
-    color: Math.random() > 0.5 ? 'caramel' : 'chocolate',
-    duration: 20 + Math.random() * 15, // 20-35 seconds
-    delay: Math.random() * 5,
-    yRange: 20 + Math.random() * 20, // 20-40px float range
-    xRange: 5 + Math.random() * 10, // 5-15px horizontal drift
-  }));
-}
-
-// Floating particle component
-function FloatingParticle({
-  particle,
-  reducedMotion,
-}: {
-  particle: ReturnType<typeof generateParticles>[number];
-  reducedMotion: boolean;
-}) {
-  const colorClass =
-    particle.color === 'caramel'
-      ? 'bg-[#d4a574]/20'
-      : 'bg-[#4a3728]/15';
-
-  if (reducedMotion) {
-    return (
-      <div
-        className={`absolute rounded-full ${colorClass}`}
-        style={{
-          left: `${particle.x}%`,
-          top: `${particle.y}%`,
-          width: particle.size,
-          height: particle.size,
-        }}
-      />
-    );
-  }
-
-  return (
-    <motion.div
-      className={`absolute rounded-full ${colorClass} will-change-transform`}
-      style={{
-        left: `${particle.x}%`,
-        top: `${particle.y}%`,
-        width: particle.size,
-        height: particle.size,
-      }}
-      animate={{
-        y: [0, -particle.yRange, 0],
-        x: [0, particle.xRange, 0],
-      }}
-      transition={{
-        duration: particle.duration,
-        repeat: Infinity,
-        ease: 'easeInOut',
-        delay: particle.delay,
-      }}
-    />
-  );
-}
-
 export default function Hero() {
-  const prefersReducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   useEffect(() => {
+    // Check mobile
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
-  // Generate particles - fewer on mobile
-  const particles = useMemo(() => {
-    const count = isMobile ? 10 : 18;
-    return generateParticles(count);
-  }, [isMobile]);
+    // Check reduced motion preference
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mediaQuery.matches);
+    const handleMotionChange = (e: MediaQueryListEvent) => {
+      setPrefersReducedMotion(e.matches);
+    };
+    mediaQuery.addEventListener('change', handleMotionChange);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      mediaQuery.removeEventListener('change', handleMotionChange);
+    };
+  }, []);
 
   const handleScroll = (href: string) => {
     const element = document.querySelector(href);
@@ -95,49 +38,46 @@ export default function Hero() {
     }
   };
 
+  // Particle count based on device
+  const particleCount = isMobile ? 12 : 20;
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Layer 1: Base Gradient */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 -z-30"
         style={{
-          background: 'linear-gradient(135deg, #fdf8f3 0%, #f5ebe0 100%)',
+          background: 'linear-gradient(135deg, #fdf8f3 0%, #f5ebe0 50%, #fdf8f3 100%)',
         }}
       />
 
       {/* Layer 2: Soft Abstract Blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
         {/* Top-right blob */}
         <div
-          className="absolute -top-20 -right-20 w-[500px] h-[500px] rounded-full blur-[100px]"
-          style={{ background: 'rgba(212, 165, 116, 0.12)' }}
+          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 rounded-full blur-3xl"
+          style={{ backgroundColor: 'rgba(212, 165, 116, 0.15)' }}
         />
         {/* Bottom-left blob */}
         <div
-          className="absolute -bottom-32 -left-32 w-[600px] h-[600px] rounded-full blur-[120px]"
-          style={{ background: 'rgba(74, 55, 40, 0.07)' }}
+          className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 rounded-full blur-3xl"
+          style={{ backgroundColor: 'rgba(74, 55, 40, 0.08)' }}
         />
-        {/* Center-left subtle blob */}
+        {/* Center subtle blob */}
         <div
-          className="absolute top-1/3 left-1/4 w-[300px] h-[300px] rounded-full blur-[80px]"
-          style={{ background: 'rgba(212, 165, 116, 0.08)' }}
+          className="absolute top-1/3 left-1/4 w-1/3 h-1/3 rounded-full blur-3xl"
+          style={{ backgroundColor: 'rgba(212, 165, 116, 0.1)' }}
         />
       </div>
 
       {/* Layer 3: Animated Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {particles.map((particle) => (
-          <FloatingParticle
-            key={particle.id}
-            particle={particle}
-            reducedMotion={prefersReducedMotion || false}
-          />
-        ))}
+      <div className="-z-10">
+        <FloatingParticles count={particleCount} />
       </div>
 
       {/* Layer 4: Grain/Noise Texture */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        className="absolute inset-0 pointer-events-none opacity-[0.03] -z-5"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }}
@@ -146,7 +86,7 @@ export default function Hero() {
       {/* Layer 5: Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
         {/* Subtle backdrop for better text readability on mobile */}
-        <div className="absolute inset-0 -mx-4 sm:-mx-6 lg:-mx-8 bg-gradient-to-b from-transparent via-[#fdf8f3]/30 to-transparent pointer-events-none md:hidden" />
+        <div className="absolute inset-0 -mx-4 sm:-mx-6 lg:-mx-8 bg-gradient-to-b from-transparent via-[#fdf8f3]/40 to-transparent pointer-events-none md:hidden" />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
