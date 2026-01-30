@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  /* Hershey-inspired color palette */
+  --chocolate: #4a3728;
+  --cocoa: #2d1f1a;
+  --caramel: #d4a574;
+  --gold: #e8c17f;
+  --cream: #fdf8f3;
+  --warm-white: #fffefa;
+  --text-dark: #1f1410;
+
+  /* Restaurant demo colors */
+  --burgundy: #722f37;
+  --restaurant-cream: #fdf6e3;
+  --rich-brown: #3d2314;
+  --copper: #b87333;
+
+  --background: var(--warm-white);
+  --foreground: var(--text-dark);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-chocolate: var(--chocolate);
+  --color-cocoa: var(--cocoa);
+  --color-caramel: var(--caramel);
+  --color-gold: var(--gold);
+  --color-cream: var(--cream);
+  --color-warm-white: var(--warm-white);
+  --color-text-dark: var(--text-dark);
+  --color-burgundy: var(--burgundy);
+  --color-restaurant-cream: var(--restaurant-cream);
+  --color-rich-brown: var(--rich-brown);
+  --color-copper: var(--copper);
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--chocolate);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cocoa);
+}
+
+/* Focus styles for accessibility */
+*:focus-visible {
+  outline: 2px solid var(--caramel);
+  outline-offset: 2px;
+}
+
+/* Selection styles */
+::selection {
+  background: var(--caramel);
+  color: var(--cocoa);
+}
+
+/* Subtle grain texture overlay */
+.grain-texture {
+  position: relative;
+}
+
+.grain-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Warm gradient background */
+.warm-gradient {
+  background: linear-gradient(180deg, var(--warm-white) 0%, var(--cream) 100%);
+}
+
+/* Card shadows */
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(74, 55, 40, 0.1), 0 2px 4px -1px rgba(74, 55, 40, 0.06);
+}
+
+.card-shadow-hover {
+  box-shadow: 0 10px 15px -3px rgba(74, 55, 40, 0.1), 0 4px 6px -2px rgba(74, 55, 40, 0.05);
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Geometric pattern for hero */
+.geometric-pattern {
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(212, 165, 116, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(74, 55, 40, 0.03) 0%, transparent 50%);
+}
