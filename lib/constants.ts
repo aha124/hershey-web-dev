@@ -71,7 +71,7 @@ export const PORTFOLIO_PROJECTS = [
     description: 'A welcoming site for our community barbershop chorus, featuring upcoming shows, membership info, and our story.',
     link: 'https://parksidevoices.org',
     note: 'Fun fact: I sing tenor with these guys',
-    image: '/images/parkside-mockup.jpg',
+    image: '/images/portfolio-parkside.png',
     isDemo: false,
   },
   {
@@ -80,7 +80,7 @@ export const PORTFOLIO_PROJECTS = [
     description: "Clean, conversion-focused site for my video game console repair side business. PS5, Xbox, Switch—I fix 'em.",
     link: 'https://arbafix.com',
     note: '',
-    image: '/images/arbafix-mockup.jpg',
+    image: '/images/portfolio-arbafix.png',
     isDemo: false,
   },
   {
@@ -89,7 +89,7 @@ export const PORTFOLIO_PROJECTS = [
     description: 'What a simple, effective site could look like for a local restaurant or café.',
     link: '/demo/restaurant',
     note: 'This is a fictional demo—click to explore',
-    image: '/images/restaurant-mockup.jpg',
+    image: '/images/demo-restaurant-hero.jpg',
     isDemo: true,
   },
 ] as const;

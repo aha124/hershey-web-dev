@@ -1,12 +1,36 @@
 'use client';
 
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ExternalLink, Sparkles } from 'lucide-react';
+import { ExternalLink, Sparkles, Globe } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import { PORTFOLIO_PROJECTS } from '@/lib/constants';
+
+function ProjectImage({ project }: { project: typeof PORTFOLIO_PROJECTS[number] }) {
+  const [imageError, setImageError] = useState(false);
+
+  if (imageError) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-[#4a3728]/10 to-[#d4a574]/20 flex items-center justify-center">
+        <Globe className="w-12 h-12 text-[#4a3728]/20" />
+      </div>
+    );
+  }
+
+  return (
+    <Image
+      src={project.image}
+      alt={`${project.title} website screenshot`}
+      fill
+      className="object-cover"
+      sizes="(max-width: 1024px) 100vw, 33vw"
+      onError={() => setImageError(true)}
+    />
+  );
+}
 
 export default function Portfolio() {
   return (
@@ -37,14 +61,12 @@ export default function Portfolio() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <Card variant="default" className="h-full flex flex-col overflow-hidden">
-                {/* Image placeholder */}
-                <div className="relative h-48 bg-gradient-to-br from-[#4a3728]/10 to-[#d4a574]/20 -mx-6 -mt-6 mb-6 flex items-center justify-center">
-                  <div className="text-[#4a3728]/30 text-sm font-medium">
-                    {project.title} Screenshot
-                  </div>
+                {/* Project image */}
+                <div className="relative h-48 -mx-6 -mt-6 mb-6 overflow-hidden">
+                  <ProjectImage project={project} />
                   {project.isDemo && (
-                    <div className="absolute top-3 right-3">
-                      <Sparkles className="w-5 h-5 text-[#d4a574]" />
+                    <div className="absolute top-3 right-3 bg-[#fffefa]/90 rounded-full p-1.5">
+                      <Sparkles className="w-4 h-4 text-[#d4a574]" />
                     </div>
                   )}
                 </div>
