@@ -124,3 +124,13 @@ body {
     radial-gradient(circle at 25% 25%, rgba(212, 165, 116, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(74, 55, 40, 0.03) 0%, transparent 50%);
 }
+
+/* Typewriter cursor blink animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s infinite;
+}
